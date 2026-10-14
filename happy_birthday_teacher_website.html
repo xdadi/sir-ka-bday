@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Respected Sir | जन्मदिन की हार्दिक शुभकामनाएं</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Yatra+One&family=Plus+Jakarta+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            100: '#FDF7E7',
+                            200: '#FCE8B3',
+                            300: '#FCE0A6',
+                            400: '#F59E0B',
+                            500: '#EAB308',
+                            600: '#CA8A04',
+                            700: '#A16207',
+                        },
+                        indigoTheme: {
+                            950: '#030712',
+                            900: '#0F172A',
+                            800: '#1E1B4B',
+                            700: '#312E81',
+                        }
+                    },
+                    fontFamily: {
+                        hindiTitle: ['Yatra One', 'serif'],
+                        hindiBody: ['Rozha One', 'serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Ambient Floating Petals / Sparks */
+        .petal {
+            position: absolute;
+            top: -50px;
+            pointer-events: none;
+            opacity: 0.8;
+            animation: fall 10s infinite linear;
+            border-radius: 50% 0 50% 50%;
+            background: linear-gradient(135deg, #f43f5e, #fb7185);
+        }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0.9; }
+            50% { transform: translateY(50vh) rotate(180deg) scale(1.1); opacity: 0.6; }
+            100% { transform: translateY(105vh) rotate(360deg) scale(0.8); opacity: 0; }
+        }
+
+        /* Gold Portrait Frame Glow Animation */
+        .gold-portrait-frame {
+            position: relative;
+            background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            border-radius: 2rem;
+            padding: 8px;
+            box-shadow: 0 0 35px rgba(234, 179, 8, 0.45);
+            animation: frameGlow 4s infinite alternate ease-in-out;
+        }
+        @keyframes frameGlow {
+            0% { box-shadow: 0 0 25px rgba(234, 179, 8, 0.35); }
+            100% { box-shadow: 0 0 50px rgba(251, 191, 36, 0.65); }
+        }
+
+        /* Candle Flame & Smoke Animation */
+        .flame {
+            width: 14px;
+            height: 22px;
+            background: linear-gradient(to bottom, #ffea00, #ff7700);
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px #ffea00, 0 0 30px #ff7700;
+            animation: flicker 0.6s infinite alternate;
+            cursor: pointer;
+        }
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+            100% { transform: translateX(-50%) scale(1.1) rotate(2deg); }
+        }
+        .flame.extinguished {
+            display: none;
+        }
+        .smoke {
+            display: none;
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 15px;
+            background: rgba(200, 200, 200, 0.6);
+            border-radius: 50%;
+            animation: riseSmoke 1.5s ease-out forwards;
+        }
+        @keyframes riseSmoke {
+            0% { transform: translate(-50%, 0) scale(1); opacity: 0.8; }
+            100% { transform: translate(-50%, -40px) scale(3); opacity: 0; }
+        }
+
+        /* Hindi Shayari Card Decorative Border */
+        .shayari-card {
+            background: radial-gradient(circle at top left, rgba(30, 27, 75, 0.9), rgba(15, 23, 42, 0.95));
+            border: 2px solid rgba(234, 179, 8, 0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #312e81;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-indigoTheme-950 text-slate-100 font-sans min-h-screen relative overflow-x-hidden selection:bg-gold-500 selection:text-indigoTheme-900">
+
+    <!-- Ambient Floating Petals Container -->
+    <div id="petals-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <!-- Music / Celebration Tune Controller Bar -->
+    <div class="fixed top-4 right-4 z-50 flex items-center gap-2 bg-indigoTheme-800/90 backdrop-blur-md px-4 py-2 rounded-full border border-gold-500/40 shadow-xl">
+        <button id="musicToggleBtn" onclick="toggleAudio()" class="text-gold-300 hover:text-gold-400 transition flex items-center gap-2 text-sm font-semibold">
+            <i id="musicIcon" class="fa-solid fa-music"></i>
+            <span id="musicText">संगीत बजाएं (Play Music)</span>
+        </button>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10 max-w-5xl mx-auto px-4 py-8 space-y-14">
+
+        <!-- HEADER SECTION -->
+        <section class="text-center space-y-6 pt-4">
+            <div class="inline-flex items-center gap-2 px-5 py-1.5 bg-gold-500/10 border border-gold-500/30 rounded-full text-gold-300 text-sm font-medium tracking-wide">
+                <span>🎓</span> <span>हमारे आदरणीय शिक्षक को सादर नमन</span>
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-hindiTitle bg-clip-text text-transparent bg-gradient-to-r from-gold-200 via-gold-400 to-amber-500 drop-shadow-lg leading-tight">
+                जन्मदिन की हार्दिक शुभकामनाएं, सर!
+            </h1>
+            <p class="text-slate-300 max-w-xl mx-auto text-sm md:text-base tracking-wide">
+                Happy Birthday to our Respected Teacher! Thank you for illuminating our path with knowledge and wisdom.
+            </p>
+
+            <!-- Teacher Framed Photo -->
+            <div class="relative w-56 h-64 md:w-64 md:h-72 mx-auto my-6 group">
+                <div class="gold-portrait-frame w-full h-full transition-transform duration-500 group-hover:scale-[1.02]">
+                    <div class="w-full h-full overflow-hidden rounded-2xl bg-indigoTheme-900 border-2 border-indigoTheme-950 relative">
+                        <img src="1517825501988.jpg" 
+                             onerror="this.onerror=null; this.src='https://placehold.co/300x350/1e1b4b/ffffff?text=Respected+Teacher';" 
+                             alt="Respected Teacher" 
+                             class="w-full h-full object-cover object-center shadow-inner">
+                    </div>
+                </div>
+                <!-- Floating Decorative Badge -->
+                <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-gold-500 to-amber-600 text-indigoTheme-950 font-bold px-4 py-1.5 rounded-full text-xs md:text-sm shadow-xl flex items-center gap-1.5 whitespace-nowrap border border-amber-200">
+                    <i class="fa-solid fa-crown"></i> श्रेष्ठ गुरु (Best Teacher)
+                </div>
+            </div>
+        </section>
+
+        <!-- HINDI SHAYARI SECTION -->
+        <section class="shayari-card rounded-3xl p-6 md:p-10 relative overflow-hidden text-center space-y-6">
+            <div class="absolute -top-10 -left-10 w-32 h-32 bg-gold-500/10 rounded-full blur-2xl"></div>
+            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl"></div>
+
+            <div class="inline-block text-gold-400 text-3xl md:text-4xl">
+                <i class="fa-solid fa-quote-left"></i>
+            </div>
+
+            <!-- Primary Hindi Shayari -->
+            <div class="space-y-4 max-w-2xl mx-auto">
+                <p class="text-xl md:text-3xl font-hindiTitle text-gold-200 leading-relaxed drop-shadow">
+                    "मार्गदर्शक हैं आप हमारे, ज्ञान का दीप जलाते हैं,<br>
+                    हर मुश्किल को आसान बनाकर, जीवन का मार्ग दिखाते हैं।"
+                </p>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto my-3"></div>
+                <p class="text-lg md:text-2xl font-hindiTitle text-amber-300">
+                    "जन्मदिन की हार्दिक शुभकामनाएं, प्रिय सर!"
+                </p>
+            </div>
+
+            <!-- Additional Shayari Line Accordion / Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 text-left max-w-3xl mx-auto">
+                <div class="bg-indigoTheme-900/60 p-4 rounded-xl border border-gold-500/20 space-y-1">
+                    <p class="text-gold-300 font-hindiBody text-base">🌸 अक्षरों का ज्ञान दिया, जीवन को आकार दिया,</p>
+                    <p class="text-slate-300 text-xs italic">"Thank you for shaping our minds with patience and care."</p>
+                </div>
+                <div class="bg-indigoTheme-900/60 p-4 rounded-xl border border-gold-500/20 space-y-1">
+                    <p class="text-gold-300 font-hindiBody text-base">⭐ गुरु बिन ज्ञान कहाँ, आपसे ही हर सीख मिली,</p>
+                    <p class="text-slate-300 text-xs italic">"Under your guidance, every challenge turned into an opportunity."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE BIRTHDAY CAKE SECTION -->
+        <section class="bg-indigoTheme-800/60 backdrop-blur-md border border-indigo-500/20 rounded-3xl p-6 md:p-8 text-center shadow-2xl relative overflow-hidden">
+            <div class="max-w-md mx-auto space-y-4">
+                <h2 class="text-2xl font-bold text-gold-300 font-serif">Blow Out the Candles & Make a Wish!</h2>
+                <p class="text-slate-300 text-sm">मोमबत्तियाँ बुझाएं और सर के लिए मंगलकामनाएं करें!</p>
+
+                <!-- Interactive Visual Cake -->
+                <div class="relative w-64 h-52 mx-auto mt-6 flex flex-col items-center justify-end">
+                    
+                    <!-- Candles Container -->
+                    <div class="flex justify-center gap-6 mb-1 z-20">
+                        <!-- Candle 1 -->
+                        <div class="relative w-4 h-12 bg-gradient-to-t from-red-500 to-pink-300 rounded-t-sm shadow">
+                            <div class="flame" onclick="extinguishCandle(this)"></div>
+                            <div class="smoke"></div>
+                        </div>
+                        <!-- Candle 2 -->
+                        <div class="relative w-4 h-14 bg-gradient-to-t from-blue-500 to-cyan-300 rounded-t-sm shadow">
+                            <div class="flame" onclick="extinguishCandle(this)"></div>
+                            <div class="smoke"></div>
+                        </div>
+                        <!-- Candle 3 -->
+                        <div class="relative w-4 h-12 bg-gradient-to-t from-amber-500 to-yellow-300 rounded-t-sm shadow">
+                            <div class="flame" onclick="extinguishCandle(this)"></div>
+                            <div class="smoke"></div>
+                        </div>
+                    </div>
+
+                    <!-- Cake Top Tier -->
+                    <div class="w-40 h-14 bg-gradient-to-r from-amber-100 via-orange-100 to-amber-200 rounded-t-2xl border-b-4 border-amber-300 shadow-md relative flex items-center justify-center">
+                        <div class="absolute top-0 inset-x-0 h-3 bg-pink-400/80 rounded-t-2xl"></div>
+                        <span class="text-xs font-bold text-slate-700 tracking-wider">🎉 CHEERS! 🎉</span>
+                    </div>
+                    
+                    <!-- Cake Bottom Tier -->
+                    <div class="w-56 h-20 bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-300 rounded-t-xl border-b-8 border-amber-400/60 shadow-xl relative flex items-center justify-center">
+                        <div class="absolute top-0 inset-x-0 h-4 bg-purple-500/70 rounded-t-xl"></div>
+                        <span class="text-xs font-serif font-semibold text-slate-800">Best Teacher Ever</span>
+                    </div>
+
+                    <!-- Cake Stand Base -->
+                    <div class="w-64 h-4 bg-slate-300 rounded-full shadow-lg"></div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="pt-4 flex flex-wrap justify-center gap-4">
+                    <button onclick="blowAllCandles()" class="px-6 py-3 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-600 hover:to-amber-700 text-indigoTheme-950 font-bold rounded-xl shadow-lg transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2">
+                        <i class="fa-solid fa-wind"></i> Blow All Candles
+                    </button>
+                    <button onclick="relightCandles()" class="px-4 py-3 bg-indigoTheme-700 hover:bg-indigo-600 text-slate-200 font-semibold rounded-xl transition text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-fire"></i> Relight Candles
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SURPRISE GIFT BOX SECTION -->
+        <section class="text-center">
+            <button onclick="openGiftModal()" class="group relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium rounded-2xl bg-gradient-to-br from-purple-600 via-pink-500 to-gold-500 group-hover:from-purple-600 group-hover:to-pink-500 shadow-xl hover:shadow-gold-500/20 transition duration-300">
+                <span class="relative px-8 py-4 bg-indigoTheme-950 rounded-2xl transition-all ease-in duration-75 group-hover:bg-opacity-0 flex items-center gap-3 text-lg font-bold text-gold-300 group-hover:text-white">
+                    <i class="fa-solid fa-gift text-2xl text-pink-400 animate-bounce"></i> सम्मान पत्र खोलें (Open Special Gift Certificate)
+                </span>
+            </button>
+        </section>
+
+        <!-- STUDENT INTERACTIVE MESSAGE BOARD -->
+        <section class="bg-indigoTheme-800/40 border border-indigo-500/20 rounded-3xl p-6 md:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-serif font-bold text-gold-300">शुभकामनाएं एवं सन्देश (Student Wishes)</h2>
+                <p class="text-slate-300 text-sm">आप भी सर के लिए अपने सम्मान भरे शब्द यहाँ लिख सकते हैं:</p>
+            </div>
+
+            <!-- Add Message Form -->
+            <form id="messageForm" onsubmit="addMessage(event)" class="max-w-2xl mx-auto space-y-4 bg-indigoTheme-900/60 p-4 md:p-6 rounded-2xl border border-indigo-500/30">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="studentName" required placeholder="आपका नाम / कक्षा (Name / Class)" 
+                           class="w-full bg-indigoTheme-800 border border-slate-700 focus:border-gold-500 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none transition">
+                    <select id="wishTag" class="w-full bg-indigoTheme-800 border border-slate-700 focus:border-gold-500 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none transition">
+                        <option value="🎈 जन्मदिन की बधाई">🎈 जन्मदिन की बधाई</option>
+                        <option value="🌟 कोटि-कोटि धन्यवाद">🌟 कोटि-कोटि धन्यवाद</option>
+                        <option value="🎓 श्रेष्ठ मार्गदर्शक">🎓 श्रेष्ठ मार्गदर्शक</option>
+                    </select>
+                </div>
+                <textarea id="studentNote" required rows="3" placeholder="सर के लिए अपनी शुभकामनाएं लिखें (Write your birthday message)..." 
+                          class="w-full bg-indigoTheme-800 border border-slate-700 focus:border-gold-500 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none transition resize-none"></textarea>
+                <button type="submit" class="w-full py-3 bg-gold-500 hover:bg-gold-600 text-indigoTheme-950 font-bold rounded-xl shadow-md transition">
+                    <i class="fa-solid fa-paper-plane mr-2"></i> सन्देश भेजें (Post Wish)
+                </button>
+            </form>
+
+            <!-- Displayed Messages Grid -->
+            <div id="messagesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">
+                <!-- Message 1 -->
+                <div class="bg-indigoTheme-700/40 border border-indigo-500/20 p-4 rounded-xl space-y-2 relative">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-bold text-gold-300">Rahul & Class Students</span>
+                        <span class="bg-indigo-900/60 text-slate-300 px-2 py-0.5 rounded-full text-[10px]">🎈 जन्मदिन की बधाई</span>
+                    </div>
+                    <p class="text-slate-200 text-sm italic">"आपकी शिक्षा हमारे जीवन की सबसे बड़ी पूंजी है। जन्मदिन की अनंत शुभकामनाएं सर!"</p>
+                    <span class="text-[10px] text-slate-400 block text-right">Just now</span>
+                </div>
+
+                <!-- Message 2 -->
+                <div class="bg-indigoTheme-700/40 border border-indigo-500/20 p-4 rounded-xl space-y-2 relative">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-bold text-gold-300">Priya Sharma</span>
+                        <span class="bg-indigo-900/60 text-slate-300 px-2 py-0.5 rounded-full text-[10px]">🎓 श्रेष्ठ मार्गदर्शक</span>
+                    </div>
+                    <p class="text-slate-200 text-sm italic">"Happy Birthday Sir! May God bless you with sound health, joy, and eternal success!"</p>
+                    <span class="text-[10px] text-slate-400 block text-right">Just now</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center text-slate-400 text-sm pt-8 border-t border-indigo-500/20">
+            <p>Created with respect & love by your students | <i class="fa-solid fa-heart text-red-500"></i> गुरुदेव को समर्पित</p>
+        </footer>
+
+    </main>
+
+    <!-- GIFT POPUP MODAL -->
+    <div id="giftModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
+        <div class="bg-indigoTheme-800 border-2 border-gold-500/60 rounded-3xl max-w-lg w-full p-6 md:p-8 text-center space-y-6 relative shadow-2xl transform transition-all scale-95" id="modalContent">
+            
+            <button onclick="closeGiftModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="w-20 h-20 bg-gold-500/20 rounded-full flex items-center justify-center mx-auto text-gold-400 text-4xl border border-gold-500/40">
+                <i class="fa-solid fa-award"></i>
+            </div>
+
+            <h3 class="text-2xl font-serif font-bold text-gold-300">शिक्षक सम्मान पत्र (Certificate of Honor)</h3>
+            
+            <div class="bg-indigoTheme-950/80 p-6 rounded-2xl border border-gold-500/30 space-y-3 text-left">
+                <p class="text-xs uppercase tracking-widest text-gold-400 font-bold text-center">सादर समर्पित</p>
+                <p class="text-2xl font-bold font-hindiTitle text-slate-100 text-center">आदरणीय सर</p>
+                <p class="text-slate-300 text-sm leading-relaxed pt-2 border-t border-slate-700/60 font-hindiBody text-center">
+                    "आपके निस्वार्थ मार्गदर्शन, अटूट धैर्य और अपार ज्ञान के लिए हम सदैव आपके आभारी रहेंगे। आप हमारे जीवन के सच्चे पथ-प्रदर्शक हैं।"
+                </p>
+                <div class="pt-3 flex justify-between items-center text-xs text-gold-300 font-sans">
+                    <span>🌟 Best Educator Honor</span>
+                    <span>समस्त शिष्यगण</span>
+                </div>
+            </div>
+
+            <button onclick="triggerConfetti(); closeGiftModal();" class="px-6 py-2.5 bg-gold-500 hover:bg-gold-600 text-indigoTheme-950 font-bold rounded-xl transition">
+                उत्सव मनाएं! (Throw Confetti 🎉)
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT & AUDIO SYNTHESIZER -->
+    <script>
+        // Web Audio API Synthesizer
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+        let isPlayingTune = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioContext();
+            }
+        }
+
+        function playTone(freq, type = 'sine', duration = 0.2) {
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        // Happy Birthday Tune Notes
+        const birthdayNotes = [
+            { f: 261.63, d: 0.3 }, { f: 261.63, d: 0.3 }, { f: 293.66, d: 0.6 }, { f: 261.63, d: 0.6 }, { f: 349.23, d: 0.6 }, { f: 329.63, d: 1.0 },
+            { f: 261.63, d: 0.3 }, { f: 261.63, d: 0.3 }, { f: 293.66, d: 0.6 }, { f: 261.63, d: 0.6 }, { f: 392.00, d: 0.6 }, { f: 349.23, d: 1.0 },
+            { f: 261.63, d: 0.3 }, { f: 261.63, d: 0.3 }, { f: 523.25, d: 0.6 }, { f: 440.00, d: 0.6 }, { f: 349.23, d: 0.6 }, { f: 329.63, d: 0.6 }, { f: 293.66, d: 0.8 }
+        ];
+
+        async function toggleAudio() {
+            initAudio();
+            const musicText = document.getElementById('musicText');
+            const musicIcon = document.getElementById('musicIcon');
+
+            if (isPlayingTune) {
+                isPlayingTune = false;
+                musicText.innerText = "संगीत बजाएं (Play Music)";
+                musicIcon.className = "fa-solid fa-music";
+            } else {
+                isPlayingTune = true;
+                musicText.innerText = "संगीत बज रहा है...";
+                musicIcon.className = "fa-solid fa-volume-high animate-pulse text-gold-400";
+                
+                for (let note of birthdayNotes) {
+                    if (!isPlayingTune) break;
+                    playTone(note.f, 'triangle', note.d);
+                    await new Promise(r => setTimeout(r, note.d * 1000 + 100));
+                }
+                
+                if (isPlayingTune) {
+                    isPlayingTune = false;
+                    musicText.innerText = "संगीत बजाएं (Play Music)";
+                    musicIcon.className = "fa-solid fa-music";
+                }
+            }
+        }
+
+        // Candle Blowing Logic
+        function extinguishCandle(flameElem) {
+            if (!flameElem.classList.contains('extinguished')) {
+                flameElem.classList.add('extinguished');
+                playTone(150, 'sawtooth', 0.3);
+                
+                const smoke = flameElem.nextElementSibling;
+                if (smoke) {
+                    smoke.style.display = 'block';
+                }
+
+                checkAllCandlesExtinguished();
+            }
+        }
+
+        function blowAllCandles() {
+            const flames = document.querySelectorAll('.flame');
+            flames.forEach(f => extinguishCandle(f));
+        }
+
+        function relightCandles() {
+            const flames = document.querySelectorAll('.flame');
+            flames.forEach(f => {
+                f.classList.remove('extinguished');
+                const smoke = f.nextElementSibling;
+                if (smoke) smoke.style.display = 'none';
+            });
+            playTone(600, 'sine', 0.2);
+        }
+
+        function checkAllCandlesExtinguished() {
+            const activeFlames = document.querySelectorAll('.flame:not(.extinguished)');
+            if (activeFlames.length === 0) {
+                triggerConfetti();
+                playTone(523.25, 'sine', 0.5);
+            }
+        }
+
+        // Confetti Burst Effect
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        // Add Message to Board
+        function addMessage(e) {
+            e.preventDefault();
+            const name = document.getElementById('studentName').value.trim();
+            const tag = document.getElementById('wishTag').value;
+            const note = document.getElementById('studentNote').value.trim();
+
+            if (!name || !note) return;
+
+            const grid = document.getElementById('messagesGrid');
+            const card = document.createElement('div');
+            card.className = "bg-indigoTheme-700/40 border border-gold-500/30 p-4 rounded-xl space-y-2 relative transition duration-500 scale-95 opacity-0";
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-center text-xs">
+                    <span class="font-bold text-gold-300">${escapeHtml(name)}</span>
+                    <span class="bg-indigo-900/60 text-slate-300 px-2 py-0.5 rounded-full text-[10px]">${escapeHtml(tag)}</span>
+                </div>
+                <p class="text-slate-200 text-sm italic">"${escapeHtml(note)}"</p>
+                <span class="text-[10px] text-slate-400 block text-right">Just now</span>
+            `;
+
+            grid.prepend(card);
+            
+            setTimeout(() => {
+                card.classList.remove('scale-95', 'opacity-0');
+                card.classList.add('scale-100', 'opacity-100');
+            }, 50);
+
+            document.getElementById('messageForm').reset();
+            playTone(700, 'sine', 0.2);
+            triggerConfetti();
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // Gift Modal
+        function openGiftModal() {
+            const modal = document.getElementById('giftModal');
+            modal.classList.remove('hidden');
+            playTone(440, 'triangle', 0.3);
+            triggerConfetti();
+        }
+
+        function closeGiftModal() {
+            const modal = document.getElementById('giftModal');
+            modal.classList.add('hidden');
+        }
+
+        // Generate Ambient Floating Petals
+        function createPetals() {
+            const container = document.getElementById('petals-container');
+            for (let i = 0; i < 18; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                const size = Math.floor(Math.random() * 12) + 10;
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size * 1.4}px`;
+                petal.style.left = `${Math.random() * 95}%`;
+                petal.style.animationDelay = `${Math.random() * 8}s`;
+                petal.style.animationDuration = `${Math.random() * 6 + 7}s`;
+                container.appendChild(petal);
+            }
+        }
+
+        window.onload = function() {
+            createPetals();
+        }
+    </script>
+</body>
+</html>
